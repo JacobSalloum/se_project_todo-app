@@ -22,4 +22,4 @@ In this app you are able to create a Todo list for yourself of item that you nee
 
 This project is deployed on GitHub Pages:
 
-- Deploymentt Link
+- [Deployment Link](https://jacobsalloum.github.io/se_project_todo-app/)
