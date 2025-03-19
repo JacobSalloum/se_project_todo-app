@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
 import PopupWithForm from "../components/PopupWithForm.js";
+import TodoCounter from "../components/TodoCounter.js";
 
 import Section from "../utils/Section.js";
 import { initialTodos, validationConfig } from "../utils/constants.js";
@@ -27,13 +28,27 @@ const addTodoPopup = new PopupWithForm({
     const todo = generateTodo(values);
     section.addItem(todo);
     addTodoPopup.close();
+    todoCounter.updateTotal(true);
   },
 });
 
 addTodoPopup.setEventListeners();
 
+function handleCheck(completed) {
+  todoCounter.updateCompleted(completed);
+}
+
+function handleDelete(completed) {
+  if (completed) {
+    todoCounter.updateCompleted(false);
+    todoCounter.updateTotal(false);
+  } else {
+    todoCounter.updateTotal(false);
+  }
+}
+
 export const generateTodo = (data) => {
-  const todo = new Todo(data, "#todo-template");
+  const todo = new Todo(data, "#todo-template", handleCheck, handleDelete);
   const todoElement = todo.getView();
   return todoElement;
 };
@@ -41,6 +56,8 @@ export const generateTodo = (data) => {
 addTodoButton.addEventListener("click", () => {
   addTodoPopup.open();
 });
+
+const todoCounter = new TodoCounter(initialTodos, ".counter__text");
 
 const section = new Section({
   items: initialTodos,
